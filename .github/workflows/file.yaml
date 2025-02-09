@@ -2,7 +2,7 @@ name: Daily Weather Check
 
 on:
   schedule:
-    - cron: "14 23 * * *"  # Runs daily at 10:25 PM UTC
+    - cron: "20 23 * * *"  # Runs daily at 10:25 PM UTC
 
   workflow_dispatch:  # Allows manual trigger
 
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Fetch Weather Data
+      - name: 23f2000232@ds.study.iitm.ac.in
         run: |
           CITY="Chennai"
           RESPONSE=$(curl -s "https://api.open-meteo.com/v1/forecast?latitude=13.08&longitude=80.27&current_weather=true")
@@ -19,5 +19,5 @@ jobs:
           WEATHER_DESC=$(echo $RESPONSE | jq '.current_weather.weathercode')
           echo "Weather in $CITY: $TEMP°C, Condition Code: $WEATHER_DESC"
 
-      - name: 23f2000232@ds.study.iitm.ac.in
+      - name: s
         run: echo "Weather check completed successfully!"
