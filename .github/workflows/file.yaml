@@ -1,20 +1,23 @@
-name: Daily Commit
+name: Daily Weather Check
 
 on:
   schedule:
-    - cron: "25 30 * * *"  # Runs daily at 22:25 UTC (10:25 PM UTC)
+    - cron: "10 23 * * *"  # Runs daily at 10:25 PM UTC
 
   workflow_dispatch:  # Allows manual trigger
 
 jobs:
-  daily-update:
+  check-weather:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Add a commit step 23f2000232@ds.study.iitm.ac.in
+      - name: Fetch Weather Data
         run: |
-          echo "Last run: $(date)" > daily_update.txt
-          
+          CITY="Chennai"
+          RESPONSE=$(curl -s "https://api.open-meteo.com/v1/forecast?latitude=13.08&longitude=80.27&current_weather=true")
+          TEMP=$(echo $RESPONSE | jq '.current_weather.temperature')
+          WEATHER_DESC=$(echo $RESPONSE | jq '.current_weather.weathercode')
+          echo "Weather in $CITY: $TEMP°C, Condition Code: $WEATHER_DESC"
+
+      - name: Complete Task
+        run: echo "Weather check completed successfully!"
