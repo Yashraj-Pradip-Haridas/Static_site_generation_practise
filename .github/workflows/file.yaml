@@ -1,14 +1,24 @@
-name: My CI Workflow  # Optional but good to include a name for the workflow
+name: Daily Commit
 
 on:
-  push:
-    branches:
-      - main  # Trigger on push to the main branch
+  schedule:
+    - cron: "30 2 * * *"  # Runs daily at 02:30 UTC
+
+  workflow_dispatch:  # Allows manual trigger
 
 jobs:
-  test:
-    runs-on: ubuntu-latest  # Specify the environment to run on
+  daily-update:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: 23f2000232@ds.study.iitm.ac.in
-        run: echo "Hello, world!"  # The command to run
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Add a commit step (23f2000232@ds.study.iitm.ac.in)
+        run: |
+          echo "Last run: $(date)" > daily_update.txt
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "23f2000232@ds.study.iitm.ac.in"
+          git add daily_update.txt
+          git commit -m "Daily update: $(date)"
+          git push
